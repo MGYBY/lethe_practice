@@ -1,0 +1,131 @@
+{
+    "simulation control":
+    {
+        "method": "bdf1",
+        "time end": 4.1,
+        "time step": 0.01,
+        "adapt": true,
+        "max cfl": 0.5,
+        "output name": "dam-break",
+        "output frequency": 20,
+        "output path": "./output/"
+    },
+    "multiphysics":
+    {
+        "VOF": true
+    },
+    "VOF":
+    {
+        "interface sharpening":
+        {
+            "enable": true,
+            "threshold": 0.5,
+            "interface sharpness": 2,
+            "frequency": 10
+        }
+    },
+    "initial conditions":
+    {
+        "type": "nodal",
+        "uvwp":
+        {
+            "Function expression": "0; 0; 0"
+        },
+        "VOF":
+        {
+            "Function expression": "if (x<3.5 & y<7 , 1, 0)"
+        }
+    },
+    "source term":
+    {
+        "enable": true,
+        "xyz":
+        {
+            "Function expression": "0;-1.0; 0"
+        }
+    },
+    "physical properties":
+    {
+        "number of fluids": 2,
+        "fluid 0":
+        {
+            "density": 0.02,
+            "kinematic viscosity": 0.1
+        },
+        "fluid 1":
+        {
+           "density": 0.02,
+            "kinematic viscosity": 0.01
+        }
+    },
+    "mesh":
+    {
+        "type": "dealii",
+        "grid type": "subdivided_hyper_rectangle",
+        "grid arguments": "14, 10 : 0, 0 : 14, 10 : true",
+        "initial refinement": 3
+    },
+    "mesh adaptation":
+    {
+        "type": "kelly",
+        "variable": "phase",
+        "fraction type": "fraction",
+        "max refinement level": 5,
+        "min refinement level": 3,
+        "frequency": 1,
+        "fraction refinement": 0.99,
+        "fraction coarsening": 0.01,
+        "initial refinement steps": 4
+    },
+    "timer":
+    {
+        "type": "none"
+    },
+    "boundary conditions":
+    {
+        "number": 4,
+        "bc 0":
+        {
+            "id": 0,
+            "type": "slip"
+        },
+        "bc 1":
+        {
+            "id": 1,
+            "type": "slip"
+        },
+        "bc 2":
+        {
+            "id": 2,
+            "type": "slip"
+        },
+        "bc 3":
+        {
+            "id": 3,
+            "type": "slip"
+        }
+    },
+    "FEM":
+    {
+        "velocity order": 1,
+        "pressure order": 1
+    },
+    "non-linear solver":
+    {
+        "tolerance": 1e-4,
+        "max iterations": 20,
+        "verbosity": "verbose"
+    },
+    "linear solver":
+    {
+        "verbosity": "verbose",
+        "method": "gmres",
+        "max iters": "1000",
+        "relative residual": 1e-3,
+        "minimum residual": 1e-5,
+        "ilu preconditioner fill": 0,
+        "ilu preconditioner absolute tolerance": 1e-12,
+        "ilu preconditioner relative tolerance": 1.00,
+        "max krylov vectors": 200
+    }
+}
